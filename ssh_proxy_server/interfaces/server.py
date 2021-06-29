@@ -257,11 +257,17 @@ class ServerInterface(BaseServerInterface):
         return False
 
     def check_channel_x11_request(self, channel, single_connection, auth_protocol, auth_cookie, screen_number):
-        logging.debug(
+        logging.info(
             "check_channel_x11_request: channel=%s, single_connection=%s, auth_protocol=%s, auth_cookie=%s, screen_number=%s",
             channel, single_connection, auth_protocol, auth_cookie, screen_number
         )
-        return False
+        self.session.x11 = True
+        self.session.x11_channel = channel
+        self.x11_single_connection = single_connection
+        self.x11_auth_protocol = auth_cookie
+        self.x11_auth_cookie = auth_cookie
+        self.x11_screen_number = screen_number
+        return True
 
     def check_global_request(self, msg):
         logging.debug(

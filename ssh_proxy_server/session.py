@@ -42,6 +42,13 @@ class Session:
         self.sftp_client = None
         self.sftp_client_ready = threading.Event()
 
+        self.x11 = False
+        self.x11_channel = None
+        self.x11_single_connection = None
+        self.x11_auth_protocol = None
+        self.x11_auth_cookie = None
+        self.x11_screen_number = None
+
         self.username = ''
         self.password = None
         self.socket_remote_address = remoteaddr

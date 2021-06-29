@@ -33,6 +33,7 @@ class SSHProxyServer:
         sftp_handler=None,
         server_tunnel_interface=None,
         client_tunnel_interface=None,
+        x11_interface=None,
         authentication_interface=None,
         authenticator=None,
         transparent=False,
@@ -58,6 +59,7 @@ class SSHProxyServer:
         self.sftp_interface = self.sftp_handler.get_interface() or sftp_interface
         self.server_tunnel_interface = server_tunnel_interface
         self.client_tunnel_interface = client_tunnel_interface
+        self.x11_interface = x11_interface
         # Server Interface
         self.authentication_interface = authentication_interface
         self.authenticator = authenticator
@@ -171,6 +173,9 @@ class SSHProxyServer:
                     elif session.scp and self.scp_interface:
                         session.scp = False
                         self.scp_interface(session).forward()
+                    elif session.x11 and self.x11_interface:
+                        session.x11 = False
+                        self.x11_interface(session).forward()
                     while session.running:
                         time.sleep(1)
                 else:

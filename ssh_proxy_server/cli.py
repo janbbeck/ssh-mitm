@@ -38,6 +38,11 @@ from ssh_proxy_server.forwarders.tunnel import (
     ClientTunnelBaseForwarder
 )
 
+from ssh_proxy_server.forwarders.x11 import (
+    X11BaseForwarder,
+    X11Forwarder
+)
+
 from ssh_proxy_server.workarounds import dropbear
 from ssh_proxy_server.plugins.ssh.mirrorshell import SSHMirrorForwarder
 from ssh_proxy_server.__version__ import version as ssh_mitm_version
@@ -123,6 +128,13 @@ def main():
         baseclass=ClientTunnelBaseForwarder
     )
     parser.add_module(
+        '--x11-handler',
+        dest='x11_interface',
+        default=X11Forwarder,
+        help='interface to handle tunnels from the client',
+        baseclass=X11BaseForwarder
+    )
+    parser.add_module(
         '--auth-interface',
         dest='auth_interface',
         default=ServerInterface,
@@ -206,6 +218,7 @@ def main():
         sftp_handler=args.sftp_handler,
         server_tunnel_interface=args.server_tunnel_interface,
         client_tunnel_interface=args.client_tunnel_interface,
+        x11_interface=args.x11_interface,
         authentication_interface=args.auth_interface,
         authenticator=args.authenticator,
         transparent=args.transparent,
