@@ -5,7 +5,7 @@ from paramiko import Transport, AUTH_SUCCESSFUL
 from paramiko.ssh_exception import ChannelException
 
 from ssh_proxy_server.forwarders.agent import AgentProxy
-from ssh_proxy_server.interfaces.server import ProxySFTPServer
+from ssh_proxy_server.interfaces.server import ProxySFTPServer, PowershellSubsystemHandler
 from ssh_proxy_server.plugins.session import key_negotiation
 from ssh_proxy_server.plugins.tunnel.injectclienttunnel import InjectableClientTunnelForwarder
 
@@ -68,6 +68,7 @@ class Session:
                 self._transport.get_security_options().ciphers = self.CIPHERS
             self._transport.add_server_key(self.proxyserver.host_key)
             self._transport.set_subsystem_handler('sftp', ProxySFTPServer, self.proxyserver.sftp_interface)
+            self._transport.set_subsystem_handler('powershell', PowershellSubsystemHandler)
 
         return self._transport
 

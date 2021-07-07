@@ -89,3 +89,14 @@ class SSHClient(BaseSSHClient):
     def check_host_key(self, hostname, keytype, key):
         """checks the host key, default always returns true"""
         return True
+
+
+class SSHClientSubsystem(SSHClient):
+
+    def __init__(self, host, port, method, password, user, key, session):
+        super().__init__(host, port, method, password, user, key, session)
+        self.subsystem_count = 0
+
+    @property
+    def running(self):
+        return self.subsystem_count > 0

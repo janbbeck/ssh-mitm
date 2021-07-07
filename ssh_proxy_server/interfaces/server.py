@@ -287,3 +287,14 @@ class ProxySFTPServer(paramiko.SFTPServer):
             return
         self.server.session.sftp_client.subsystem_count -= 1
         self.server.session.sftp_client.close()
+
+
+class PowershellSubsystemHandler(paramiko.server.SubsystemHandler):
+
+    def start_subsystem(self, name, transport, channel):
+        logging.debug("started powershell subsystem: %s, %s, %s", name, transport, channel)
+        super().start_subsystem(name, transport, channel)
+
+    def finish_subsystem(self):
+        super().finish_subsystem()
+        logging.info("finished powershell subsystem")
